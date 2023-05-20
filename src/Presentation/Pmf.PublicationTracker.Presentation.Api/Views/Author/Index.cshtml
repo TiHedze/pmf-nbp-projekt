@@ -1,0 +1,11 @@
+﻿@using Pmf.PublicationTracker.Domain.Models;
+@model List<AuthorViewModel>
+
+<ul>
+    @foreach(var author in Model)
+    {
+        <li>
+            @author.FirstName
+        </li>
+    }
+</ul>

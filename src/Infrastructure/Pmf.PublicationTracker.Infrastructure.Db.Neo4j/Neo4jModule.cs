@@ -1,6 +1,6 @@
 ﻿namespace Pmf.PublicationTracker.Infrastructure.Db.Neo4j
 {
-    public class Class1
+    public class Neo4jModule
     {
 
     }
