@@ -2,19 +2,16 @@
 {
     using MediatR;
     using Pmf.PublicationTracker.Application.Contracts.Repositories;
-    using Pmf.PublicationTracker.Domain.Models;
-    using System;
+    using Pmf.PublicationTracker.Domain.Entities;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
     public static class GetAuthors
     {
-        public record Request(): IRequest<List<AuthorViewModel>>;
+        public record Request() : IRequest<List<Author>>;
 
-        internal class Handler : IRequestHandler<Request, List<AuthorViewModel>>
+        internal class Handler : IRequestHandler<Request, List<Author>>
         {
             private readonly IPostgresRepository repository;
 
@@ -23,13 +20,10 @@
                 this.repository = repository;
             }
 
-            public async Task<List<AuthorViewModel>> Handle(Request request, CancellationToken cancellationToken)
-            {
-                var authors = await this.repository.GetAuthorsAsync(cancellationToken);
-                return authors
-                    .Select(AuthorViewModel.FromEntity)
-                    .ToList();
-            }
+            public async Task<List<Author>> Handle(
+                Request request, 
+                CancellationToken cancellationToken)
+                => await this.repository.GetAuthorsAsync(cancellationToken);
         }
     }
 }

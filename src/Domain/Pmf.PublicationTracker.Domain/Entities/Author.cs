@@ -1,7 +1,7 @@
-﻿using Pmf.PublicationTracker.Domain.Common.Entities;
-
-namespace Pmf.PublicationTracker.Domain.Entities
+﻿namespace Pmf.PublicationTracker.Domain.Entities
 {
+    using Pmf.PublicationTracker.Domain.Common;
+
     public class Author : EntityBase
     {
         public Author() { }

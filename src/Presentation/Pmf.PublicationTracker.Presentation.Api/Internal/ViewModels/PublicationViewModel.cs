@@ -1,13 +1,8 @@
-﻿namespace Pmf.PublicationTracker.Domain.Models
+﻿namespace Pmf.PublicationTracker.Presentation.Api.Internal.ViewModels
 {
     using Pmf.PublicationTracker.Domain.Common.ViewModels;
-    using Pmf.PublicationTracker.Domain.Common.Entities;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Pmf.PublicationTracker.Domain.Entities;
+    using System.Collections.Generic;
 
     public class PublicationViewModel : ViewModelBase, IConstructibleFromDomainEntity<Publication, PublicationViewModel>
     {

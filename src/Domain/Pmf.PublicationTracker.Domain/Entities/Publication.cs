@@ -1,6 +1,6 @@
 ﻿namespace Pmf.PublicationTracker.Domain.Entities
 {
-    using Pmf.PublicationTracker.Domain.Common.Entities;
+    using Pmf.PublicationTracker.Domain.Common;
 
     public class Publication: EntityBase
     {

@@ -1,8 +1,8 @@
-﻿namespace Pmf.PublicationTracker.Controllers
+﻿namespace Pmf.PublicationTracker.Presentation.Api.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
-    using Pmf.PublicationTracker.Models;
+    using Pmf.PublicationTracker.Presentation.Api.Internal.ViewModels;
     using System.Diagnostics;
 
     public class HomeController : Controller

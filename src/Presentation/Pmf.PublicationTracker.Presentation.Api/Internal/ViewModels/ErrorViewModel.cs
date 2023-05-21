@@ -1,4 +1,4 @@
-namespace Pmf.PublicationTracker.Models
+namespace Pmf.PublicationTracker.Presentation.Api.Internal.ViewModels
 {
     public class ErrorViewModel
     {
