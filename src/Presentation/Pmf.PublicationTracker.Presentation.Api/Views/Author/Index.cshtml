@@ -1,11 +1,12 @@
 ﻿@using Pmf.PublicationTracker.Presentation.Api.Internal.ViewModels;
 @model List<AuthorViewModel>
 
-<ul>
-    @foreach(var author in Model)
-    {
-        <li>
-            @author.FirstName
-        </li>
-    }
-</ul>
+@foreach (var author in Model)
+{
+    <div class="card" style="width: 18rem">
+        <div class="card-body">
+            <p>@author.FirstName @author.LastName</p>
+            <a asp-controller="Publication" asp-action="GetPublicationsByAuthor" asp-route-id=@author.Id class="btn btn-primary">View Publications</a>
+        </div>
+    </div>
+}

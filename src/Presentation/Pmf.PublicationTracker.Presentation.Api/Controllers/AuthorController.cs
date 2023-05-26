@@ -7,7 +7,7 @@
     using Pmf.PublicationTracker.Presentation.Api.Internal.Mappings;
     using Pmf.PublicationTracker.Presentation.Api.Internal.ViewModels;
 
-    public class AuthorController : Controller
+    public sealed class AuthorController : Controller
     {
         private readonly IMediator mediator;
 

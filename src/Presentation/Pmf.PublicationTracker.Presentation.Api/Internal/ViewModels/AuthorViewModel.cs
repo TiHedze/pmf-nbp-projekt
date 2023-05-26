@@ -7,10 +7,12 @@ public class AuthorViewModel : ViewModelBase, IConstructibleFromDomainEntity<Aut
 {
     private AuthorViewModel(Author author) 
     {
+        this.Id = author.Id;
         this.FirstName = author.FirstName;
         this.LastName = author.LastName;
     }
 
+    public Guid Id { get; }
     public string FirstName { get; } = default!;
     public string LastName { get; } = default!;
 
