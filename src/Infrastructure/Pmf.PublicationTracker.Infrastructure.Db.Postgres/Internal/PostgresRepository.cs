@@ -1,5 +1,6 @@
 ﻿namespace Pmf.PublicationTracker.Infrastructure.Db.Postgres.Internal
 {
+    using Microsoft.EntityFrameworkCore;
     using Pmf.PublicationTracker.Application.Contracts.Repositories;
     using Pmf.PublicationTracker.Domain.Entities;
     using System;
@@ -29,16 +30,26 @@
 
         public async Task<Author?> GetAuthorByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await this.dbContext.Authors.FindAsync(id, cancellationToken);
+            return await this.dbContext
+                .Authors
+                .FirstOrDefaultAsync(
+                    author => author.Id == id,
+                    cancellationToken);
         }
 
-        public Task<List<Author>> GetAuthorsAsync(CancellationToken cancellationToken)
+        public async Task<List<Author>> GetAuthorsAsync(string? filter, CancellationToken cancellationToken)
         {
-            return Task.FromResult(new List<Author>()
+            if (filter is not null)
             {
-                new (Guid.NewGuid(), "Tilen1", "Tilen1"),
-                new (Guid.NewGuid(), "Tilen2", "Tilen2")
-            });
+                return await this.dbContext
+                    .Authors
+                    .Where(author => (author.FirstName + author.LastName).Contains(filter))
+                    .ToListAsync(cancellationToken);
+            }
+
+            return await this.dbContext
+                .Authors
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<Author> UpdateAuthorAsync(Author author, CancellationToken cancellationToken)

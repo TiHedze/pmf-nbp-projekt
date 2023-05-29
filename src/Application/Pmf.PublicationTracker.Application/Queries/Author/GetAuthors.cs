@@ -9,7 +9,7 @@
 
     public static class GetAuthors
     {
-        public record Request() : IRequest<List<Author>>;
+        public record Request(string QueryString) : IRequest<List<Author>>;
 
         internal class Handler : IRequestHandler<Request, List<Author>>
         {
