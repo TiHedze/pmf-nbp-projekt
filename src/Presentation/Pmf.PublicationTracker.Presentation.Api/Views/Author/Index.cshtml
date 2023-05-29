@@ -1,12 +1,33 @@
 ﻿@using Pmf.PublicationTracker.Presentation.Api.Internal.ViewModels;
 @model List<AuthorViewModel>
 
-@foreach (var author in Model)
-{
-    <div class="card" style="width: 18rem">
-        <div class="card-body">
-            <p>@author.FirstName @author.LastName</p>
-            <a asp-controller="Publication" asp-action="GetPublicationsByAuthor" asp-route-id=@author.Id class="btn btn-primary">View Publications</a>
-        </div>
-    </div>
-}
+<a asp-action="Create">Create new author</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Publications</th>
+            <th scope="col">Details</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var (author, i) in Model.Select((author, i) => (author, i+1)))
+        {
+            <tr>
+                <th scope="row">@i</th>
+                <td>@author.FirstName</td>
+                <td>@author.LastName</td>
+                <td><a asp-controller="Publication" asp-action="Author" asp-route-id=@author.Id class="btn btn-primary">View Publications</a></td>
+                <td><a asp-controller="Author" asp-action="Details" asp-route-id=@author.Id class="btn btn-primary">Details</a></td>
+                <td><a asp-controller="Author" asp-action="Delete" asp-route-id=@author.Id class="btn btn-danger">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

@@ -1,0 +1,13 @@
+﻿@using Pmf.PublicationTracker.Presentation.Api.Internal.ViewModels;
+@model List<PublicationViewModel>
+
+@foreach(var publication in Model) 
+{
+    <div class="card" style="width: 18rem">
+        <div class="card-body">
+            <p>@publication.Title</p>
+            <br />
+            <p>@string.Join(',', @publication.Authors.Select(author => $"{author.FirstName} {author.LastName}"))</p>
+        </div>
+    </div>
+}

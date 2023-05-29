@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Author\Create.cshtml" />
+    <None Remove="Views\Author\Details.cshtml" />
     <None Remove="Views\Author\Index.cshtml" />
     <None Remove="Views\Home\Index.cshtml" />
     <None Remove="Views\Home\Privacy.cshtml" />
+    <None Remove="Views\Publication\Create.cshtml" />
+    <None Remove="Views\Publication\Index.cshtml" />
     <None Remove="Views\Shared\Error.cshtml" />
     <None Remove="Views\Shared\_Layout.cshtml" />
     <None Remove="Views\Shared\_Layout.cshtml.css" />
@@ -19,6 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Views\Author\Create.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Author\Details.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Author\Index.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -30,6 +40,12 @@
     <EmbeddedResource Include="Views\Home\Privacy.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Publication\Create.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Publication\Index.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Shared\Error.cshtml">

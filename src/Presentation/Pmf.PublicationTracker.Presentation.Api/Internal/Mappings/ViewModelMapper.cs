@@ -10,7 +10,7 @@
             where TDomainEntity : EntityBase
             => TViewModel.FromEntity(domainEntity);
 
-        public static List<TViewModel> MapList<TDomainEntity, TViewModel>(List<TDomainEntity> domainEntities)
+        public static List<TViewModel> Map<TDomainEntity, TViewModel>(List<TDomainEntity> domainEntities)
             where TViewModel : ViewModelBase, IConstructibleFromDomainEntity<TDomainEntity, TViewModel>
             where TDomainEntity : EntityBase
             => domainEntities

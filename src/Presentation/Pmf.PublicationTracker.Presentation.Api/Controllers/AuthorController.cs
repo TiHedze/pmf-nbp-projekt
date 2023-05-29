@@ -5,6 +5,7 @@
     using Pmf.PublicationTracker.Application.Queries.Author;
     using Pmf.PublicationTracker.Domain.Entities;
     using Pmf.PublicationTracker.Presentation.Api.Internal.Mappings;
+    using Pmf.PublicationTracker.Presentation.Api.Internal.Requests;
     using Pmf.PublicationTracker.Presentation.Api.Internal.ViewModels;
 
     public sealed class AuthorController : Controller
@@ -16,12 +17,30 @@
             this.mediator = mediator;
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             var viewData = ViewModelMapper
-                .MapList<Author, AuthorViewModel>(await this.mediator.Send(new GetAuthors.Request()));
+                .Map<Author, AuthorViewModel>(await this.mediator.Send(new GetAuthors.Request()));
 
             return View(viewData);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveAuthor(AuthorRequest author) 
+        {
+            //create author;
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Details(Guid authorId)
+        {
+            return View();
         }
     }
 }

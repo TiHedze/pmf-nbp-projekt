@@ -14,4 +14,10 @@
     <ProjectReference Include="..\Pmf.PublicationTracker.Application.Contracts\Pmf.PublicationTracker.Application.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\Author\" />
+    <Folder Include="Commands\Publication\" />
+    <Folder Include="Queries\Publication\" />
+  </ItemGroup>
+
 </Project>
