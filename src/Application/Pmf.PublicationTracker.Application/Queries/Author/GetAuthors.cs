@@ -9,7 +9,7 @@
 
     public static class GetAuthors
     {
-        public record Request(string QueryString) : IRequest<List<Author>>;
+        public record Request(string? QueryString) : IRequest<List<Author>>;
 
         internal class Handler : IRequestHandler<Request, List<Author>>
         {
@@ -23,7 +23,7 @@
             public async Task<List<Author>> Handle(
                 Request request, 
                 CancellationToken cancellationToken)
-                => await this.repository.GetAuthorsAsync(cancellationToken);
+                => await this.repository.GetAuthorsAsync(request.QueryString, cancellationToken);
         }
     }
 }

@@ -6,7 +6,6 @@
     using Pmf.PublicationTracker.Infrastructure.Db.Neo4j.Internal.Models;
     using System;
     using System.Collections.Generic;
-    using System.Threading;
     using System.Threading.Tasks;
 
     internal sealed class Neo4jRepository : INeo4jRepository
@@ -26,16 +25,18 @@
                  .ExecuteWithoutResultsAsync();
         }
 
-        public Task CreatePublicationAsync(Publication publication)
+        public async Task CreatePublicationAsync(Publication publication)
         {
-            throw new NotImplementedException();
+            var batch = publication.Authors.Select(author => new {author, publication.Title }).ToList();    
+            //this.client.Cypher.Unwind()
         }
 
         public async Task<List<Author>> GetRelatedAuthors(Author author)
         {
             IEnumerable<Author> coAuthors = await this.client.Cypher
                 .Match("(firstAuthor:Author)-[:AUTHORED]->(:Paper)<-[:AUTHORED]-(coAuthor: Author)")
-                .Where((Author firstAuthor, Author coAuthor) => author.Id != coAuthor.Id && firstAuthor.Id == author.Id)
+                .Where((Author firstAuthor, Author coAuthor) => author.Id != coAuthor.Id)
+                .AndWhere((Author firstAuthor) => firstAuthor.Id != author.Id)
                 .Return<Author>("coAuthor")
                 .ResultsAsync;
 

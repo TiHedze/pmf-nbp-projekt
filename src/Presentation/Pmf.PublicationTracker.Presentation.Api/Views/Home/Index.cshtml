@@ -3,5 +3,10 @@
 }
 
 <form asp-controller="Author" asp-action="Search">
-    <p>Name: <input type="text" name="" /></p>
+    <p>Find author by name: <input type="text" name="query"/></p>
+    <input type="submit" class="btn btn-primary" />
+</form>
+<form asp-controller="Publication" asp-action="Search">
+    <p>Find publication by title: <input type="text" name="query" /></p>
+    <input type="submit" class="btn btn-primary" />
 </form>

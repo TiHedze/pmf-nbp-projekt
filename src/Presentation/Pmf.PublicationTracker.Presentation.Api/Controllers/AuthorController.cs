@@ -20,10 +20,10 @@
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken, string? filter = default)
         {
-            var viewData = ViewModelMapper
-                .Map<Author, AuthorViewModel>(await this.mediator.Send(new GetAuthors.Request(), cancellationToken));
+            //var viewData = ViewModelMapper
+                //.Map<Author, AuthorViewModel>(await this.mediator.Send(new GetAuthors.Request(filter), cancellationToken));
 
-            return View(viewData);
+            return View();
         }
 
         public IActionResult Create()

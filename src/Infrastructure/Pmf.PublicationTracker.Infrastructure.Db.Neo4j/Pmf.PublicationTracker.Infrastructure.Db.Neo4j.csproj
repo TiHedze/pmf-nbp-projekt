@@ -11,4 +11,8 @@
     <PackageReference Include="Neo4jClient" Version="5.1.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\Pmf.PublicationTracker.Application.Contracts\Pmf.PublicationTracker.Application.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

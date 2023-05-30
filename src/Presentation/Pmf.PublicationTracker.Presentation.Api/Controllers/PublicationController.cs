@@ -13,7 +13,7 @@
             this.mediator = mediator;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string? query = default)
         {
             PublicationViewModel? viewModel = null; // fetching logic here
             return View(viewModel);
@@ -27,7 +27,7 @@
 
         public async Task<IActionResult> Create()
         {
-            throw new NotImplementedException();
+            return RedirectToAction(nameof(Index));
         }
 
         //public async Task<IActionResult> 
