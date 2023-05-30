@@ -9,12 +9,14 @@
     {
         private PublicationViewModel(Publication publication)
         {
+            this.Id = publication.Id;
             this.Title = publication.Title;
             this.Abstract = publication.Abstract;
             this.Keywords = publication.Keywords;
             this.Authors = ViewModelMapper.Map<Author, AuthorViewModel>(publication.Authors);
         }
 
+        public Guid Id { get; set; }
         public string Title { get; set; } = default!;
         public string Abstract { get; set; } = default!;
         public List<string> Keywords { get; set; } = default!;

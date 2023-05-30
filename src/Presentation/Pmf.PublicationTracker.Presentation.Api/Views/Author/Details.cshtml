@@ -19,7 +19,7 @@
                 {
                     <tr>
                         <td>
-                            @publication.Title
+                            <a asp-controller="Publication" asp-action="Details" asp-route-id=@publication.Id >@publication.Title</a>
                         </td>
                     </tr>
                 }
