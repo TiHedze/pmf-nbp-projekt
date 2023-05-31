@@ -27,9 +27,20 @@
 
         public async Task<IActionResult> Create()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveAuthor(AuthorRequest author, CancellationToken cancellationToken)
+        {
+
             return RedirectToAction(nameof(Index));
         }
 
-        //public async Task<IActionResult> 
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
