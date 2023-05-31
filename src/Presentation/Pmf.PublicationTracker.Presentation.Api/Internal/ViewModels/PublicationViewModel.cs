@@ -23,5 +23,13 @@
         public List<AuthorViewModel> Authors { get; set; } = default!;
 
         public static PublicationViewModel FromEntity(Publication entity) => new(entity);
+
+        public string AuthorNames
+        {
+            get =>
+                string.Join(
+                    ',',
+                    this.Authors.Select(author => $"{author.FirstName} {author.LastName}"));
+        }
     }
 }

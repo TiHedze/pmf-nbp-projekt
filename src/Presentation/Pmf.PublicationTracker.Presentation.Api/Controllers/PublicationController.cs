@@ -2,6 +2,7 @@
 {
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
+    using Pmf.PublicationTracker.Presentation.Api.Internal.Requests;
     using Pmf.PublicationTracker.Presentation.Api.Internal.ViewModels;
 
     public sealed class PublicationController : Controller
@@ -31,7 +32,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveAuthor(AuthorRequest author, CancellationToken cancellationToken)
+        public async Task<IActionResult> SavePublication(PublicationRequest publication, CancellationToken cancellationToken)
         {
 
             return RedirectToAction(nameof(Index));

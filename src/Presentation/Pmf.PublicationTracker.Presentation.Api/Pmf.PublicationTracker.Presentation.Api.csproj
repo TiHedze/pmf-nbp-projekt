@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -9,17 +9,24 @@
   <ItemGroup>
     <None Remove="Views\Author\Create.cshtml" />
     <None Remove="Views\Author\Details.cshtml" />
+    <None Remove="Views\Author\Edit.cshtml" />
     <None Remove="Views\Author\Index.cshtml" />
     <None Remove="Views\Home\Index.cshtml" />
     <None Remove="Views\Home\Privacy.cshtml" />
     <None Remove="Views\Publication\Create.cshtml" />
+    <None Remove="Views\Publication\Details.cshtml" />
     <None Remove="Views\Publication\Index.cshtml" />
+    <None Remove="Views\Publication\Index.cshtml~RF1531aeab.TMP" />
     <None Remove="Views\Shared\Error.cshtml" />
     <None Remove="Views\Shared\_Layout.cshtml" />
     <None Remove="Views\Shared\_Layout.cshtml.css" />
     <None Remove="Views\Shared\_ValidationScriptsPartial.cshtml" />
     <None Remove="Views\_ViewImports.cshtml" />
     <None Remove="Views\_ViewStart.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Views\Author\Edit.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +50,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Publication\Create.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Publication\Details.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Publication\Index.cshtml">

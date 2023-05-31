@@ -18,7 +18,7 @@
             this.mediator = mediator;
         }
 
-        public async Task<IActionResult> Index(CancellationToken cancellationToken, string? filter = default)
+        public async Task<IActionResult> Index(string? filter = default)
         {
             //var viewData = ViewModelMapper
                 //.Map<Author, AuthorViewModel>(await this.mediator.Send(new GetAuthors.Request(filter), cancellationToken));
@@ -39,15 +39,23 @@
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Details(Guid authorId)
+        public async Task<IActionResult> Details(Guid authorId, CancellationToken cancellationToken)
         {
-            return View();
+            var (author, publications, relatedAuthors) = await this.mediator.Send(new GetAuthorById.Request(authorId), cancellationToken);
+            var viewModel = new AuthorDetailsViewModel()
+            {
+                Author = ViewModelMapper.Map<Author, AuthorViewModel>(author),
+                Publications = ViewModelMapper.Map<Publication, PublicationViewModel>(publications),
+                RelatedAuthors = ViewModelMapper.Map<Author, AuthorViewModel>(relatedAuthors)
+            };
+
+            return View(viewModel);
         }
 
         public async Task<IActionResult> Search(string query)
         {
 
-            throw new NotImplementedException();
+            return RedirectToAction(nameof(Index), new { query });
         }
     }
 }

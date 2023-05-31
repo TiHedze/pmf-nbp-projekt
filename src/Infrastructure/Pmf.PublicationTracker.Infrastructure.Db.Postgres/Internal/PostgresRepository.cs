@@ -20,6 +20,7 @@
         public async Task CreateAuthorAsync(Author author, CancellationToken cancellationToken)
         {
             await this.dbContext.Authors.AddAsync(author, cancellationToken);
+            await this.dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task DeleteAuthorAsync(Author author, CancellationToken cancellationToken)

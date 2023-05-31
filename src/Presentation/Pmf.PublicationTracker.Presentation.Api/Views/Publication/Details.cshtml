@@ -1,1 +1,31 @@
-﻿
+﻿@using Pmf.PublicationTracker.Presentation.Api.Internal.ViewModels;
+@model PublicationViewModel
+
+<div class="card">
+    <div class="card-header">
+        <h3>@Model.Title</h3>
+        <h5>@Model.AuthorNames</h5>
+    </div>
+    <div class="card-body">
+        <p>@Model.Abstract</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        Authors
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var author in Model.Authors)
+                {
+                    <tr>
+                        <td>
+                            <a asp-controller="Author" asp-action="Details" asp-route-id=@author.Id>@author.FirstName @author.LastName</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
