@@ -25,7 +25,7 @@
             {
                 Author author = new (Guid.NewGuid(), request.FirstName, request.LastName);
                 await this.repository.CreateAuthorAsync(author, cancellationToken);
-                await this.neo4JRepository.CreateAuthorAsync(author);
+                await this.neo4JRepository.CreateAuthorAsync(author.Id);
             }
         }
     }

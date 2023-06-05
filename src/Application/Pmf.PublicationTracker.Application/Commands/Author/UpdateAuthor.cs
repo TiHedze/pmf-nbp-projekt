@@ -24,7 +24,6 @@
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
                 await this.postgresRepository.UpdateAuthorAsync(request.Author, cancellationToken);
-                await this.neo4jRepository.UpdateAuthorAsync(request.Author);
             }
         }
     }

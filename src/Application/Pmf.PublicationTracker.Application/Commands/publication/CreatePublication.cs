@@ -1,6 +1,7 @@
 ﻿namespace Pmf.PublicationTracker.Application.Commands.Publication
 {
     using MediatR;
+    using Pmf.PublicationTracker.Application.Contracts.DataTransferObjects;
     using Pmf.PublicationTracker.Application.Contracts.Repositories;
     using Pmf.PublicationTracker.Domain.Entities;
     using System.Collections.Generic;
@@ -25,17 +26,19 @@
             {
                 var authors = await this.postgresRepository.GetAuthorsByName(request.AuthorNames, cancellationToken);
 
-                var publication = new Publication() 
-                { 
-                    Title = request.Title, 
-                    Abstract = request.Abstract, 
-                    Authors = authors, 
-                    Id = Guid.NewGuid(), 
+                var publication = new Publication()
+                {
+                    Title = request.Title,
+                    Abstract = request.Abstract,
+                    Authors = authors,
+                    Id = Guid.NewGuid(),
                     Keywords = request.Keywords.Split(',').ToList()
                 };
 
-                await this.postgresRepository.CreatePublicationAsync(publication, cancellationToken);
-                await this.neo4jRepository.CreatePublicationAsync(publication);
+                PublicationDto dto = new PublicationDto(publication.Id, publication.Title, publication.Abstract, publication.Keywords, request.AuthorNames)
+
+                await this.postgresRepository.CreatePublicationAsync(dto, cancellationToken);
+                await this.neo4jRepository.CreatePublicationAsync(dto.Id, authors.Select(author => author.Id).ToList(), publication.Keywords);
             }
         }
     }

@@ -1,7 +1,9 @@
 ﻿namespace Pmf.PublicationTracker.Application.Commands.Publication
 {
     using MediatR;
+    using Pmf.PublicationTracker.Application.Contracts.DataTransferObjects;
     using Pmf.PublicationTracker.Application.Contracts.Repositories;
+    using Pmf.PublicationTracker.Domain.Common.Requests;
     using Pmf.PublicationTracker.Domain.Entities;
     using System;
     using System.Collections.Generic;
@@ -12,7 +14,7 @@
 
     public static class UpdatePublication
     {
-        public record Command(Publication publication): IRequest;
+        public record Command(UpdatePublicationRequest Publication): IRequest;
         internal sealed class Handler : IRequestHandler<Command>
         {
             private readonly IPostgresRepository postgresRepository;
@@ -26,8 +28,18 @@
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
-                await this.postgresRepository.UpdatePublicationAsync(request.publication, cancellationToken);
-                await this.neo4JRepository.UpdatePublicationAsync(request.publication);
+                PublicationDto dto = new PublicationDto(
+                    request.Publication.Id,
+                    request.Publication.Title,
+                    request.Publication.Abstract,
+                    request.Publication.Keywords.Split(',').ToList(),
+                    request.Publication.Authors
+                        .Select(author => $"{author.FirstName}{author.LastName}")
+                        .ToList());
+                var authors = await this.postgresRepository.GetAuthorsByName(dto.AuthorNames, cancellationToken);
+                await this.postgresRepository.UpdatePublicationAsync(dto, cancellationToken);
+                await this.neo4JRepository.RemoveAllAuthorsFromPublicationAsync(dto.Id);
+                await this.neo4JRepository.AddAuthorsToPublication(dto.Id, authors.Select(author => author.Id).ToList());
             }
         }
     }
