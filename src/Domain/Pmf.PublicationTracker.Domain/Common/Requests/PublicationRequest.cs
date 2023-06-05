@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public sealed class PublicationRequest
+    public class PublicationRequest
     {
         public string Title { get; set; } = default!;
         public string Abstract { get; set; } = default!;

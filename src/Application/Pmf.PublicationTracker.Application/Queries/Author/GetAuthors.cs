@@ -23,7 +23,9 @@
             public async Task<List<Author>> Handle(
                 Request request, 
                 CancellationToken cancellationToken)
-                => await this.repository.GetAuthorsAsync(request.QueryString, cancellationToken);
+                => request.QueryString is not null
+                    ? await this.repository.GetAuthorsAsync(request.QueryString, cancellationToken)
+                    : await this.repository.GetAuthorsAsync(cancellationToken);
         }
     }
 }

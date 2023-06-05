@@ -2,7 +2,7 @@
 {
     using MediatR;
     using Pmf.PublicationTracker.Application.Contracts.Repositories;
-    using Pmf.PublicationTracker.Application.DataTransferObjects;
+    using Pmf.PublicationTracker.Application.Contracts.DataTransferObjects;
     using Pmf.PublicationTracker.Domain.Entities;
     using System;
     using System.Threading;
@@ -28,7 +28,7 @@
             { 
                 var author = await this.postgresRepository.GetAuthorByIdAsync(request.AuthorId, cancellationToken);
                 var publications = await this.postgresRepository.GetPublicationsByAuthorAsync(author, cancellationToken);
-                var relatedAuthors = await this.neo4JRepository.GetRelatedAuthors(author);
+                var relatedAuthors = await this.neo4JRepository.GetRelatedAuthorIds(author.Id);
 
                 return new AuthorDetails(author, publications, relatedAuthors);
             }

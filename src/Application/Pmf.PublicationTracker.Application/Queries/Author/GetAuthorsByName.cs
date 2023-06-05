@@ -23,8 +23,7 @@
                 Request request,
                 CancellationToken cancellationToken)
             {
-                var preparedAuthorNames = string.Join(',', request.AuthorNames);
-                return await this.postgresRepository.GetAuthorsByName(preparedAuthorNames, cancellationToken);
+                return await this.postgresRepository.GetAuthorsByName(request.AuthorNames, cancellationToken);
             }
         }
     }

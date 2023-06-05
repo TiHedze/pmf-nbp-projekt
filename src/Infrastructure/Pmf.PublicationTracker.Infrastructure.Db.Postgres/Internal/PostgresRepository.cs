@@ -118,7 +118,6 @@
             => await this.dbContext
                 .Authors
                 .ToListAsync(cancellationToken);
-        }
 
         public async Task<List<Author>> GetAuthorsById(List<Guid> authorIds, CancellationToken cancellationToken) 
             => await this.dbContext.Authors

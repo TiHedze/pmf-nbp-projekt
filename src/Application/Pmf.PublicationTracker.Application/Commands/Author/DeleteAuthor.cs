@@ -3,15 +3,12 @@
     using MediatR;
     using Pmf.PublicationTracker.Application.Contracts.Repositories;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
     public static class DeleteAuthor
     {
-        public record Command(Guid Id): IRequest;
+        public record Command(Guid Id) : IRequest;
 
         internal sealed class Handler : IRequestHandler<Command>
         {
