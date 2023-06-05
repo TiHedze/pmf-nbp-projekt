@@ -2,6 +2,8 @@
 {
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
+    using Pmf.PublicationTracker.Application.Commands.Publication;
+    using Pmf.PublicationTracker.Domain.Common.Requests;
     using Pmf.PublicationTracker.Presentation.Api.Internal.Requests;
 
     [ApiController]
@@ -14,34 +16,16 @@
             this.mediator = mediator;
         }
 
-        public IActionResult Index(string? query = default)
-        {
-            return View(viewModel);
-        }
-
-        public async Task<IActionResult> Author(Guid authorId)
-        {
-            object? viewModel = null; //this.mediator.S
-            return View(viewModel);
-        }
-
-        public async Task<IActionResult> Create()
-        {
-            return View();
-        }
-
         [HttpPost]
-        public async Task<IActionResult> SavePublication(PublicationRequest publication, CancellationToken cancellationToken)
-        {
-            
+        public async Task<Guid> Post([FromBody] PublicationRequest publication)
+            => await this.mediator.Send(new CreatePublication.Command(publication));
 
-            return RedirectToAction(nameof(Index));
-        }
+        [HttpPut]
+        public async Task<Guid> Put([FromBody] UpdatePublicationRequest publication)
+           => await this.mediator.Send(new UpdatePublication.Command(publication));
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            return RedirectToAction(nameof(Index));
-        }
+        [HttpDelete("{id}")]
+        public async Task Delete(Guid id)
+            => await this.mediator.Send(new DeletePublication.Command(id));
     }
 }

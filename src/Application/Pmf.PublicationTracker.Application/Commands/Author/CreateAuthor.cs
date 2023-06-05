@@ -8,9 +8,9 @@
 
     public static class CreateAuthor
     {
-        public record Command(string FirstName, string LastName) : IRequest;
+        public record Command(Author Author) : IRequest<Guid>;
 
-        internal sealed class Handler : IRequestHandler<Command>
+        internal sealed class Handler : IRequestHandler<Command, Guid>
         {
             private readonly IPostgresRepository repository;
             private readonly INeo4jRepository neo4JRepository;
@@ -21,11 +21,13 @@
                 this.neo4JRepository = neo4JRepository;
             }
 
-            public async Task Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Guid> Handle(Command request, CancellationToken cancellationToken)
             {
-                Author author = new (Guid.NewGuid(), request.FirstName, request.LastName);
+                Author author = new (Guid.NewGuid(), request.Author.FirstName, request.Author.LastName);
                 await this.repository.CreateAuthorAsync(author, cancellationToken);
                 await this.neo4JRepository.CreateAuthorAsync(author.Id);
+
+                return author.Id;
             }
         }
     }

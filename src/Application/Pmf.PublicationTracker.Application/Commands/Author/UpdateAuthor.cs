@@ -9,21 +9,21 @@
 
     public static class UpdateAuthor
     {
-        public record Command(Author Author): IRequest;
-        internal sealed class Handler : IRequestHandler<Command>
+        public record Command(Author Author): IRequest<Author?>;
+        internal sealed class Handler : IRequestHandler<Command, Author?>
         {
             private readonly IPostgresRepository postgresRepository;
-            private readonly INeo4jRepository neo4jRepository;
 
-            public Handler(IPostgresRepository postgresRepository, INeo4jRepository neo4jRepository)
+            public Handler(IPostgresRepository postgresRepository)
             {
                 this.postgresRepository = postgresRepository;
-                this.neo4jRepository = neo4jRepository;
             }
 
-            public async Task Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Author?> Handle(Command request, CancellationToken cancellationToken)
             {
                 await this.postgresRepository.UpdateAuthorAsync(request.Author, cancellationToken);
+
+                return await this.postgresRepository.GetAuthorByIdAsync(request.Author.Id, cancellationToken);
             }
         }
     }

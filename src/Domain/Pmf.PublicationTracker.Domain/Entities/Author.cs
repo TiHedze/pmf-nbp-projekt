@@ -5,7 +5,11 @@
     public class Author : EntityBase
     {
         public Author() { }
-        public Author(Guid id, string firstName, string lastName)
+
+        public Author(
+            Guid id,
+            string firstName,
+            string lastName)
         {
             this.Id = id;
             this.FirstName = firstName;
