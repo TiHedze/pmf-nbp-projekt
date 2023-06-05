@@ -6,7 +6,7 @@
     {
         public string Title { get; set; } = default!;
         public string Abstract { get; set; } = default!;
-        public List<string> AuthorNames { get; set; } = default!;
+        public List<AuthorRequest> Authors { get; set; } = default!;
         public string Keywords { get; set; } = default!;
     }
 }

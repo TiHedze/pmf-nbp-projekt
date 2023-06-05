@@ -3,9 +3,9 @@
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Pmf.PublicationTracker.Presentation.Api.Internal.Requests;
-    using Pmf.PublicationTracker.Presentation.Api.Internal.ViewModels;
 
-    public sealed class PublicationController : Controller
+    [ApiController]
+    public sealed class PublicationController : ControllerBase
     {
         private readonly IMediator mediator;
 
@@ -16,7 +16,6 @@
 
         public IActionResult Index(string? query = default)
         {
-            PublicationViewModel? viewModel = null; // fetching logic here
             return View(viewModel);
         }
 
@@ -34,6 +33,7 @@
         [HttpPost]
         public async Task<IActionResult> SavePublication(PublicationRequest publication, CancellationToken cancellationToken)
         {
+            
 
             return RedirectToAction(nameof(Index));
         }

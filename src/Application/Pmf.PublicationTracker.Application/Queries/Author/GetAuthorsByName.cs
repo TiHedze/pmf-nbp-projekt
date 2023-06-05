@@ -22,7 +22,10 @@
             public async Task<List<Author>> Handle(
                 Request request,
                 CancellationToken cancellationToken)
-                => await this.postgresRepository.GetAuthorsByName(request.AuthorNames, cancellationToken);
+            {
+                var preparedAuthorNames = string.Join(',', request.AuthorNames);
+                return await this.postgresRepository.GetAuthorsByName(preparedAuthorNames, cancellationToken);
+            }
         }
     }
 }

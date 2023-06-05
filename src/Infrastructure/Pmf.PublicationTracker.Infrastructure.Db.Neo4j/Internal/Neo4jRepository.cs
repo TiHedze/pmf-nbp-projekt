@@ -2,8 +2,6 @@
 {
     using Neo4jClient;
     using Pmf.PublicationTracker.Application.Contracts.Repositories;
-    using Pmf.PublicationTracker.Domain.Entities;
-    using Pmf.PublicationTracker.Infrastructure.Db.Neo4j.Internal.Models;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -17,31 +15,44 @@
             this.client = client;
         }
 
-        public async Task CreateAuthorAsync(Author author)
+        public Task AddAuthorsToPublication(Guid publicationId, List<Guid> authorIds) => throw new NotImplementedException();
+        public async Task CreateAuthorAsync(Guid authorId)
+        {
+            await this.client.Cypher.Create($"(:Author {{id: {authorId}}})").ExecuteWithoutResultsAsync();
+        }
+        public async Task CreatePublicationAsync(Guid publicationId, List<Guid> auhtorIds, List<string> Keywords)
+        {
+            using (var transaction = this.client.Tx.BeginTransaction())
+            {
+                await this.client.Cypher.Create($"(:Publication {{id: {publicationId}}})").ExecuteWithoutResultsAsync();
+
+                foreach (var authorId in auhtorIds)
+                {
+                    await this.client.Cypher
+                        .Match($"(author: Author {{id: {authorId}}})")
+                        .Match($"(publication: Publication {{id: {publicationId}}})")
+                        .Merge($"(author)-[:WROTE]->(publication)")
+                        .ExecuteWithoutResultsAsync();
+                }
+
+                foreach (var keyword in Keywords)
+                {
+                    await this.client.Cypher
+                        .Match($"(keyword: Keyword {{value: {keyword}}})")
+                        .Match($"(publication: Publication {{id: {publicationId}}})")
+                        .Merge($"(keyword)-[:DESCRIBES]->(publication)")
+                        .ExecuteWithoutResultsAsync();
+                }
+            }
+        }
+        public Task<List<Guid>> GetRelatedAuthorIds(Guid authorId) => throw new NotImplementedException();
+        public async Task RemoveAuthorAsync(Guid authorId)
         {
             await this.client.Cypher
-                 .Create(":Autor {newAuthor}")
-                 .WithParam("newAuthor", new AuthorDto(author))
-                 .ExecuteWithoutResultsAsync();
+                .Match($"(author: Author {{id: {authorId}}})")
+                .DetachDelete("author")
+                .ExecuteWithoutResultsAsync();
         }
-
-        public async Task CreatePublicationAsync(Publication publication)
-        {
-            var batch = publication.Authors.Select(author => new {author, publication.Title }).ToList();    
-            //this.client.Cypher.Unwind()
-        }
-
-        public async Task<List<Author>> GetRelatedAuthors(Author author)
-        {
-            IEnumerable<Author> coAuthors = await this.client.Cypher
-                .Match("(firstAuthor:Author)-[:AUTHORED]->(:Paper)<-[:AUTHORED]-(coAuthor: Author)")
-                .Where((Author firstAuthor, Author coAuthor) => author.Id != coAuthor.Id)
-                .AndWhere((Author firstAuthor) => firstAuthor.Id != author.Id)
-                .Return<Author>("coAuthor")
-                .ResultsAsync;
-
-            return coAuthors.ToList();
-        }
-        public async Task RemoveAuthorAsync(Author author) => throw new NotImplementedException();
+        public Task RemoveAuthorsFromPublication(Guid publicationId, List<Guid> authorIds) => throw new NotImplementedException();
     }
 }

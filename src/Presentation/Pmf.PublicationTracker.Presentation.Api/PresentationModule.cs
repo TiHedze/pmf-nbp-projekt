@@ -8,15 +8,9 @@
     {
         public static IServiceCollection AddPresentationModule(this IServiceCollection services)
         {
-            var assembly = typeof(PresentationModule).Assembly;
-            services.AddControllersWithViews()
-                .AddApplicationPart(assembly)
-                .AddRazorRuntimeCompilation();
-
-            services.Configure<MvcRazorRuntimeCompilationOptions>(options =>
-            {
-                options.FileProviders.Add(new EmbeddedFileProvider(assembly));
-            });
+            services.AddControllers();
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
 
             return services;
         }
