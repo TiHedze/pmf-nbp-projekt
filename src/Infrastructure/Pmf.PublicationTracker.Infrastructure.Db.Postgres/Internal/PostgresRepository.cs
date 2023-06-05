@@ -81,11 +81,11 @@
 
         public async Task DeleteAuthorAsync(Author author, CancellationToken cancellationToken)
         {
-            this.dbContext.Authors.Remove(author);
-            await this.dbContext.SaveChangesAsync(cancellationToken);
+            await this.dbContext.Authors.Where(a => a.Id == author.Id).ExecuteDeleteAsync(cancellationToken);
         }
 
-        public Task DeletePublicationAsync(Publication publication, CancellationToken cancellationToken) => throw new NotImplementedException();
+        public async Task DeletePublicationAsync(Publication publication, CancellationToken cancellationToken)
+            => await this.dbContext.Publications.Where(p => p.Id == publication.Id).ExecuteDeleteAsync(cancellationToken);
 
         public async Task<Author?> GetAuthorByIdAsync(Guid id, CancellationToken cancellationToken)
         {
