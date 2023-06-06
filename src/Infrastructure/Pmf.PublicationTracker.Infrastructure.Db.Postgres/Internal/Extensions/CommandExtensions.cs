@@ -1,12 +1,13 @@
 ﻿namespace Pmf.PublicationTracker.Infrastructure.Db.Postgres.Internal.Extensions
 {
+    using Microsoft.EntityFrameworkCore;
     using System.Data.Common;
-    using System.Net.Http.Headers;
 
     internal static class CommandExtensions
     {
         internal static async Task<List<T>> GetAsync<T>(
             this DbCommand command,
+            DbContext dbContext,
             CancellationToken cancellationToken)
         {
             try
@@ -20,7 +21,7 @@
                     return new();
                 }
 
-                return await reader.ReadListAsync<T>(cancellationToken);
+                return await reader.ReadListAsync<T>(dbContext, cancellationToken);
             }
             finally
             {
@@ -30,6 +31,7 @@
 
         internal static async Task<T?> GetSingleAsync<T>(
             this DbCommand command,
+            DbContext dbContext,
             CancellationToken cancellationToken)
         {
             try
@@ -43,7 +45,7 @@
                     return default;
                 }
 
-                return await reader.ReadSingleAsync<T>(cancellationToken);
+                return await reader.ReadSingleAsync<T>(dbContext, cancellationToken);
 
             }
             finally

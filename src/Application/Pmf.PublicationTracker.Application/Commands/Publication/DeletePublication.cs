@@ -23,9 +23,8 @@
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
-                var publication = await this.postgresRepository.GetPublicationByIdAsync(request.Id, cancellationToken);
-                await this.postgresRepository.DeletePublicationAsync(publication!, cancellationToken);
-                await this.neo4JRepository.RemovePublicationAsync(publication!.Id);
+                await this.postgresRepository.DeletePublicationAsync(request.Id, cancellationToken);
+                await this.neo4JRepository.RemovePublicationAsync(request.Id);
             }
         }
     }

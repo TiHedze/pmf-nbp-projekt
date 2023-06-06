@@ -8,6 +8,7 @@
     using Pmf.PublicationTracker.Infrastructure.Db.Postgres.Internal.Extensions;
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Data.Common;
     using System.Threading;
     using System.Threading.Tasks;
@@ -59,7 +60,7 @@
                 new NpgsqlParameter()
                 {
                     ParameterName = "keywords",
-                    Value = publication.Keywords,
+                    Value = string.Join(',',publication.Keywords),
                     NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.Varchar
                 },
                 new NpgsqlParameter()
@@ -79,13 +80,13 @@
             }
         }
 
-        public async Task DeleteAuthorAsync(Author author, CancellationToken cancellationToken)
+        public async Task DeleteAuthorAsync(Guid id, CancellationToken cancellationToken)
         {
-            await this.dbContext.Authors.Where(a => a.Id == author.Id).ExecuteDeleteAsync(cancellationToken);
+            await this.dbContext.Authors.Where(a => a.Id == id).ExecuteDeleteAsync(cancellationToken);
         }
 
-        public async Task DeletePublicationAsync(Publication publication, CancellationToken cancellationToken)
-            => await this.dbContext.Publications.Where(p => p.Id == publication.Id).ExecuteDeleteAsync(cancellationToken);
+        public async Task DeletePublicationAsync(Guid id, CancellationToken cancellationToken)
+            => await this.dbContext.Publications.Where(p => p.Id == id).ExecuteDeleteAsync(cancellationToken);
 
         public async Task<Author?> GetAuthorByIdAsync(Guid id, CancellationToken cancellationToken)
         {
@@ -111,7 +112,7 @@
                     NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.Varchar,
                 });
 
-            return await command.GetAsync<Author>(cancellationToken);
+            return await command.GetAsync<Author>(this.dbContext, cancellationToken);
         }
 
         public async Task<List<Author>> GetAuthorsAsync(CancellationToken cancellationToken)
@@ -119,12 +120,12 @@
                 .Authors
                 .ToListAsync(cancellationToken);
 
-        public async Task<List<Author>> GetAuthorsById(List<Guid> authorIds, CancellationToken cancellationToken) 
+        public async Task<List<Author>> GetAuthorsByIdAsync(List<Guid> authorIds, CancellationToken cancellationToken) 
             => await this.dbContext.Authors
                 .Where(author => authorIds.Contains(author.Id))
                 .ToListAsync(cancellationToken);
 
-        public async Task<List<Author>> GetAuthorsByName(List<string> authorNames, CancellationToken cancellationToken)
+        public async Task<List<Author>> GetAuthorsByNameAsync(List<string> authorNames, CancellationToken cancellationToken)
         {
             DbConnection connection = this.dbContext.Database.GetDbConnection();
             await using DbCommand command = connection.CreateCommand();
@@ -139,7 +140,25 @@
                     NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.Array | NpgsqlTypes.NpgsqlDbType.Varchar,
                 });
 
-            return await command.GetAsync<Author>(cancellationToken);
+            return await command.GetAsync<Author>(this.dbContext, cancellationToken);
+        }
+
+        public async Task<List<Author>> GetAuthorsByPublicationIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            DbConnection connection = this.dbContext.Database.GetDbConnection();
+            await using DbCommand command = connection.CreateCommand();
+
+            command.CommandText = "SELECT * FROM public.fn_author_get_by_publication_id(@publication_id)";
+
+            command.Parameters.Add(
+                new NpgsqlParameter()
+                {
+                    ParameterName = "publication_id",
+                    Value = id,
+                    NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.Uuid
+                });
+
+            return await command.GetAsync<Author>(this.dbContext, cancellationToken);
         }
         public async Task<Publication?> GetPublicationByIdAsync(
             Guid id,
@@ -162,7 +181,7 @@
                     NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.Uuid
                 });
 
-            return await command.GetAsync<Publication>(cancellationToken);
+            return await command.GetAsync<Publication>(this.dbContext, cancellationToken);
         }
         public async Task<List<Publication>> GetPublicationsByTitleAsync(string title, CancellationToken cancellationToken)
             => await this.dbContext.Publications

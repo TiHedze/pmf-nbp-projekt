@@ -23,7 +23,7 @@
                 Request request,
                 CancellationToken cancellationToken)
             {
-                return await this.postgresRepository.GetAuthorsByName(request.AuthorNames, cancellationToken);
+                return await this.postgresRepository.GetAuthorsByNameAsync(request.AuthorNames, cancellationToken);
             }
         }
     }

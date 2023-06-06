@@ -2,6 +2,8 @@
 {
     using Microsoft.Extensions.DependencyInjection;
     using Neo4jClient;
+    using Pmf.PublicationTracker.Application.Contracts.Repositories;
+    using Pmf.PublicationTracker.Infrastructure.Db.Neo4j.Internal;
     using Pmf.PublicationTracker.Infrastructure.Db.Neo4j.Internal.Settings;
 
     public static class Neo4jModule
@@ -19,6 +21,8 @@
                 
                 return client;
             });
+
+            services.AddScoped<INeo4jRepository, Neo4jRepository>();
 
             return services;
         }

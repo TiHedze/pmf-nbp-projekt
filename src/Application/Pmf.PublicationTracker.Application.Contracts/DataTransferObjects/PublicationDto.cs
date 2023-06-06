@@ -1,5 +1,6 @@
 ﻿namespace Pmf.PublicationTracker.Application.Contracts.DataTransferObjects
 {
+    using Pmf.PublicationTracker.Domain.Entities;
     using System;
     using System.Collections.Generic;
 
@@ -20,4 +21,6 @@
         public List<string> Keywords { get; set; } = default!;
         public List<string> AuthorNames { get; set; } = default!;
     }
+
+    public record PublicationDetails(Guid Id, string Title, string Abstract, string Keywords, List<Author> Authors);
 }

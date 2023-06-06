@@ -29,7 +29,7 @@
             {
                 var relatedIds = await this.neo4JRepository.GetRelatedAuthorIds(request.AuthorId);
 
-                var relatedAuthors = await this.postgresRepository.GetAuthorsById(relatedIds, cancellationToken);
+                var relatedAuthors = await this.postgresRepository.GetAuthorsByIdAsync(relatedIds, cancellationToken);
 
                 return relatedAuthors;
             }

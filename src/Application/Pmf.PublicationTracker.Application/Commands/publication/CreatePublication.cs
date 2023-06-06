@@ -23,18 +23,23 @@
 
             public async Task<Guid> Handle(Command request, CancellationToken cancellationToken)
             {
-                var splittedAuthors = request.Publication.Authors
+                var splitAuthors = request.Publication.Authors
                         .Select(author => $"{author.FirstName}{author.LastName}")
                         .ToList();
 
-                var splittedKeywords = request.Publication.Keywords.Split(',').ToList();
+                var splitKeywords = request.Publication.Keywords.Split(',').ToList();
 
-                var authors = await this.postgresRepository.GetAuthorsByName(splittedAuthors, cancellationToken);
+                var authors = await this.postgresRepository.GetAuthorsByNameAsync(splitAuthors, cancellationToken);
 
-                PublicationDto dto = new PublicationDto(Guid.NewGuid(), request.Publication.Title, request.Publication.Abstract,splittedKeywords, splittedAuthors);
+                PublicationDto dto = new PublicationDto(
+                    Guid.NewGuid(),
+                    request.Publication.Title,
+                    request.Publication.Abstract,
+                    splitKeywords,
+                    splitAuthors);
 
                 await this.postgresRepository.CreatePublicationAsync(dto, cancellationToken);
-                await this.neo4jRepository.CreatePublicationAsync(dto.Id, authors.Select(author => author.Id).ToList(), splittedKeywords);
+                await this.neo4jRepository.CreatePublicationAsync(dto.Id, authors.Select(author => author.Id).ToList(), splitKeywords);
 
                 return dto.Id;
             }

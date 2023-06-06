@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  backend:
+    image: ${DOCKER_REGISTRY-}pmf-nbp-publication-tracker
+    build:
+      context: .
+      dockerfile: src/Pmf.PublicationTracker.Startup/Dockerfile

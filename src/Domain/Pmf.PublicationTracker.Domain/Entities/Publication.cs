@@ -7,7 +7,7 @@
         public Guid Id { get; set; }
         public string Title { get; set; } = default!;
         public string Abstract { get; set; } = default!;
-        public List<string> Keywords { get; set; } = default!;
+        public string Keywords { get; set; } = default!;
         public List<Author> Authors { get; set; } = default!;
     }
 }

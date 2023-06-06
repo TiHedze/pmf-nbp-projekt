@@ -33,10 +33,10 @@
                     request.Publication.Authors
                         .Select(author => $"{author.FirstName}{author.LastName}")
                         .ToList());
-                var authors = await this.postgresRepository.GetAuthorsByName(dto.AuthorNames, cancellationToken);
+                var authors = await this.postgresRepository.GetAuthorsByNameAsync(dto.AuthorNames, cancellationToken);
                 await this.postgresRepository.UpdatePublicationAsync(dto, cancellationToken);
                 await this.neo4JRepository.RemoveAllAuthorsFromPublicationAsync(dto.Id);
-                await this.neo4JRepository.AddAuthorsToPublication(dto.Id, authors.Select(author => author.Id).ToList());
+                await this.neo4JRepository.AddAuthorsToPublication(dto.Id, authors?.Select(author => author.Id).ToList() ?? new());
 
                 return dto.Id;
             }

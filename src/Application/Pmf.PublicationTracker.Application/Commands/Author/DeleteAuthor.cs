@@ -23,8 +23,7 @@
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
-                var author = await this.postgresRepository.GetAuthorByIdAsync(request.Id, cancellationToken);
-                await this.postgresRepository.DeleteAuthorAsync(author, cancellationToken);
+                await this.postgresRepository.DeleteAuthorAsync(request.Id, cancellationToken);
                 await this.neo4JRepository.RemoveAuthorAsync(request.Id);
             }
         }
